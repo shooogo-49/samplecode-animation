@@ -1,0 +1,92 @@
+
+
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class ShipScript : MonoBehaviour
+{
+    // Start is called before the first frame update
+    private bool isMovingRight = false;
+    private bool isMovingLeft = false;
+    private bool isMovingUp = false;
+    private bool isMovingDown = false;
+
+    float x = 0f;
+    float y = 0f;
+    float z = 0f;
+
+    public float moveSpeed = 0.4f;
+    void Start()
+    {
+        
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.RightArrow))
+        {
+            isMovingRight = true;
+            isMovingLeft = false;
+            isMovingUp = false;
+            isMovingDown = false;
+        }
+        if (Input.GetKeyDown(KeyCode.LeftArrow))
+        {
+            isMovingRight = false;
+            isMovingLeft = true;
+            isMovingUp = false;
+            isMovingDown = false;
+        }
+        if (Input.GetKeyDown(KeyCode.UpArrow))
+        {
+            isMovingRight = false;
+            isMovingLeft = false;
+            isMovingUp = true;
+            isMovingDown = false;
+        }
+        if (Input.GetKeyDown(KeyCode.DownArrow))
+        {
+            isMovingRight = false;
+            isMovingLeft = false;
+            isMovingUp = false;
+            isMovingDown = true;
+        }
+
+        if (isMovingRight)
+        {
+            x = Input.GetAxisRaw("Horizontal"); //GetAxisRawにすれば-1, 0, 1の値を取得できる
+            y = 0f;
+            z = 0f;
+        }
+        else if (isMovingLeft)
+        {
+            x = Input.GetAxisRaw("Horizontal");
+            y = 0f;
+            z = 0f;
+        }
+        else if (isMovingUp)
+        {
+            x = 0f;
+            y = Input.GetAxisRaw("Vertical");
+            z = 0f;
+        }
+        else if (isMovingDown)
+        {
+            x = 0f;
+            y = Input.GetAxisRaw("Vertical");
+            z = 0f;
+        }
+        else
+        {
+            x = 0f;
+            y = 0f;
+            z = 0f;
+        }
+        
+        transform.position += new Vector3(x, y, z) * moveSpeed * Time.deltaTime;
+    }
+}
+
+
