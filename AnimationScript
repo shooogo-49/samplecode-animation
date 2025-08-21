@@ -1,0 +1,84 @@
+
+
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class AnimationScript : MonoBehaviour
+{
+    private bool isMovingRight = false;
+    private bool isMovingLeft = false;
+    private bool isMovingUp = false;
+    private bool isMovingDown = false;
+    private Animator animator;
+    // Start is called before the first frame updat
+    void Start()
+    {
+        animator = GetComponent<Animator>(); //毎回UpdateでGetComponentを呼ぶのは非効率なので、Startで一度だけ取得する
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.RightArrow))
+        {
+            isMovingRight = true;
+            isMovingLeft = false;
+            isMovingUp = false;
+            isMovingDown = false;
+        }
+        if (Input.GetKeyDown(KeyCode.LeftArrow))
+        {
+            isMovingRight = false;
+            isMovingLeft = true;
+            isMovingUp = false;
+            isMovingDown = false;
+        }
+        if (Input.GetKeyDown(KeyCode.UpArrow))
+        {
+            isMovingRight = false;
+            isMovingLeft = false;
+            isMovingUp = true;
+            isMovingDown = false;
+        }
+        if (Input.GetKeyDown(KeyCode.DownArrow))
+        {
+            isMovingRight = false;
+            isMovingLeft = false;
+            isMovingUp = false;
+            isMovingDown = true;
+        }
+
+        if (isMovingRight)
+        {
+            animator.SetBool("MoveRight", true);
+            animator.SetBool("MoveLeft", false);
+            animator.SetBool("MoveUp", false);
+            animator.SetBool("MoveDown", false);
+        }
+        else if (isMovingLeft)
+        {
+            animator.SetBool("MoveLeft", true);
+            animator.SetBool("MoveRight", false);
+            animator.SetBool("MoveUp", false);
+            animator.SetBool("MoveDown", false);
+        }
+        else if (isMovingUp)
+        {
+            animator.SetBool("MoveUp", true);
+            animator.SetBool("MoveRight", false);
+            animator.SetBool("MoveLeft", false);
+            animator.SetBool("MoveDown", false);
+        }
+        else if (isMovingDown)
+        {
+            animator.SetBool("MoveDown", true);
+            animator.SetBool("MoveRight", false);
+            animator.SetBool("MoveLeft", false);
+            animator.SetBool("MoveUp", false);
+        }
+
+    }
+}
+
+
