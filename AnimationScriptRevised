@@ -3,49 +3,56 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-public class ShipScriptRevised : MonoBehaviour
+public class AnimationScriptRevised : MonoBehaviour
 {
-    // 目標：1マス移動
-    //一回の運動で1マス分徐々に
-    //移動中は入力を受け付けない
-    //徐々に動く：コルーチン
+    private Animator animator;
+    private Vector3 lastPosition;
+    private Vector3 velocity;
+
     void Start()
     {
-
+        animator = GetComponent<Animator>(); // Get the Animator component once at the start
+        
+        lastPosition = transform.position;
     }
 
-    bool isMoving;
+    // Update is called once per frame
     void Update()
     {
-        if (isMoving == false)
+        velocity = transform.position - lastPosition;
+
+        float moveX = velocity.x;
+        float moveY = velocity.y;
+
+        if (moveX > 0)
         {
-            float x = Input.GetAxisRaw("Horizontal") * 0.32f;
-            float y = Input.GetAxisRaw("Vertical") * 0.32f;
-
-            if (x != 0)
-            {
-                y = 0;
-            }
-
-            //transform.position += new Vector3(x, y);
-
-                StartCoroutine(Move(new Vector2(x, y)));
+            animator.SetBool("MoveRight", true);
+            animator.SetBool("MoveLeft", false);
+            animator.SetBool("MoveUp", false);
+            animator.SetBool("MoveDown", false);
         }
-    }
-
-    IEnumerator Move(Vector3 direction) // new Vector2(x, y)がVector3 directionに代入される
-    {
-        isMoving = true; //移動中は入力を受け付けない
-        Vector3 targetPos = transform.position + direction; //targetPosは変数名
-        //現在とターゲットの場所が違うなら近づけ続ける
-        while ((targetPos - transform.position).sqrMagnitude > Mathf.Epsilon) //Mathf.Epsilonはとても小さい値
+        else if (moveX < 0)
         {
-            transform.position = Vector3.MoveTowards(transform.position, targetPos, 1f * Time.deltaTime);
-            yield return null; //次のフレームまで待つ
+            animator.SetBool("MoveLeft", true);
+            animator.SetBool("MoveRight", false);
+            animator.SetBool("MoveUp", false);
+            animator.SetBool("MoveDown", false);
+        }
+        else if (moveY > 0)
+        {
+            animator.SetBool("MoveUp", true);
+            animator.SetBool("MoveRight", false);
+            animator.SetBool("MoveLeft", false);
+            animator.SetBool("MoveDown", false);
+        }
+        else if (moveY < 0)
+        {
+            animator.SetBool("MoveDown", true);
+            animator.SetBool("MoveRight", false);
+            animator.SetBool("MoveLeft", false);
+            animator.SetBool("MoveUp", false);
         }
 
-        transform.position = targetPos; //最終的にターゲットの位置に移動
-        isMoving = false;
+        lastPosition = transform.position; //毎フレーム更新する
     }
 }
