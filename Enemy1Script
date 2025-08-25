@@ -1,0 +1,53 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class Enemy1Script : MonoBehaviour
+{
+
+    public float moveSpeed = 0.6f;
+
+    public GameObject Ship;
+    public GameObject Enemy1;
+
+    bool isAttacking = false;
+    // Start is called before the first frame update
+    void Start()
+    {
+
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        Vector3 shipPos = Ship.transform.position;
+        Vector3 enemyPos = Enemy1.transform.position;
+
+        Vector3 distance = shipPos - enemyPos;
+        Vector3 direction = distance.normalized;
+
+
+        if (distance.magnitude > 0.20f && isAttacking == false) // 一定距離以上離れている場合のみ移動
+        {
+            Enemy1.transform.position += direction * moveSpeed * Time.deltaTime;
+        }
+
+        else if (distance.magnitude <= 0.20f && isAttacking == false)
+        {
+            isAttacking = true;
+            // ここに攻撃の処理を追加できます
+            Debug.Log("Attack!");
+            StartCoroutine(AttackCoroutine());
+        }
+
+        
+    }
+
+
+    IEnumerator AttackCoroutine()
+    {
+        // 攻撃のクールダウン時間
+        yield return new WaitForSeconds(2.0f);
+        isAttacking = false;
+    }
+}
