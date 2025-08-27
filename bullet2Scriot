@@ -1,0 +1,33 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class bullet2Script : MonoBehaviour
+{
+    public float moveSpeed = 0.3f;
+
+    public GameObject Ship;
+    public GameObject Enemy3;
+    public Vector3 direction;
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        Vector3 distance = Ship.transform.position - transform.position;
+        direction = distance.normalized;
+
+        transform.position += direction * moveSpeed * Time.deltaTime;
+
+        if ((transform.position - Ship.transform.position).magnitude < 0.1f)
+        {
+            Debug.Log("Attack!");
+            Destroy(gameObject);
+        }
+    }
+}
